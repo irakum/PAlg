@@ -5,12 +5,12 @@ namespace ExternalSort
 {
     public class Sort
     {
-        private long _iteration = 1;
+        private long _step = 1;
 
         public void ExterSort()
         {
             PrintFile();
-            while (_iteration < Const.NumOfElem)
+            while (_step < Const.NumOfElem)
             {
                 DivideFiles();
                 MergeFiles();
@@ -31,7 +31,7 @@ namespace ExternalSort
 
             while (pos != length)
             {
-                if (counter == _iteration)
+                if (counter == _step)
                 {
                     counter = 0;
                     isOdd = !isOdd;
@@ -60,19 +60,19 @@ namespace ExternalSort
             long lenC = fileC.BaseStream.Length;
             bool endB = false, endC = false;
             int? numberB = null, numberC = null;
-            long iterB = _iteration, iterC = _iteration;
+            long iterB = 0, iterC = 0;
 
             while (!endC || !endB)
             {
-                if (iterB==0 && iterC==0)
+                if (iterB==_step && iterC==_step)
                 {
-                    iterB = _iteration;
-                    iterC = _iteration;
+                    iterB = 0;
+                    iterC = 0;
                 }
 
                 if (fileB.BaseStream.Position != lenB)
                 {
-                    if (iterB > 0 && numberB == null)
+                    if (iterB < _step && numberB == null)
                     {
                         numberB = fileB.ReadInt32();
                     }
@@ -84,7 +84,7 @@ namespace ExternalSort
 
                 if (fileC.BaseStream.Position != lenC)
                 {
-                    if (iterC > 0 && numberC == null)
+                    if (iterC < _step && numberC == null)
                     {
                         numberC = fileC.ReadInt32();
                     }
@@ -96,37 +96,29 @@ namespace ExternalSort
 
                 if (numberB != null)
                 {
-                    if (numberC != null)
+                    if (numberC == null || numberB < numberC)
                     {
-                        if (numberB < numberC)
-                        {
-                            fileA.Write(numberB.Value);
-                            numberB = null;
-                            iterB--;
-                        }
-                        else
-                        {
-                            fileA.Write(numberC.Value);
-                            numberC = null;
-                            iterC--;
-                        }
+
+                        fileA.Write(numberB.Value);
+                        numberB = null;
+                        iterB++;
                     }
                     else
                     {
-                        fileA.Write(numberB.Value);
-                        numberB = null;
-                        iterB--;
+                        fileA.Write(numberC.Value);
+                        numberC = null;
+                        iterC++;
                     }
                 }
                 else if (numberC != null)
                 {
                     fileA.Write(numberC.Value);
                     numberC = null;
-                    iterC--;
+                    iterC++;
                 }
             }
 
-            _iteration *= 2;
+            _step *= 2;
         }
 
         private void PrintFile()
