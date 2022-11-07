@@ -6,7 +6,6 @@ namespace ExternalSort
     public class Sort
     {
         private long _step = 1;
-
         public void ExterSort()
         {
             PrintFile();
@@ -15,12 +14,11 @@ namespace ExternalSort
                 DivideFiles();
                 MergeFiles();
             }
+            Console.WriteLine();
             PrintFile();
         }
         private void DivideFiles()
         {
-            int element;
-
             using BinaryReader fileA = new BinaryReader(File.OpenRead(Const.FileA));
             using BinaryWriter fileB = new BinaryWriter(File.Create(Const.FileB));
             using BinaryWriter fileC = new BinaryWriter(File.Create(Const.FileC));
@@ -28,6 +26,7 @@ namespace ExternalSort
             long length = fileA.BaseStream.Length;
             long pos = 0;
             long counter = 0;
+            int element;
 
             while (pos != length)
             {
@@ -98,7 +97,6 @@ namespace ExternalSort
                 {
                     if (numberC == null || numberB < numberC)
                     {
-
                         fileA.Write(numberB.Value);
                         numberB = null;
                         iterB++;
@@ -121,7 +119,7 @@ namespace ExternalSort
             _step *= 2;
         }
 
-        private void PrintFile()
+        public void PrintFile()
         {
             using BinaryReader fileA = new BinaryReader(File.OpenRead(Const.FileA));
             long lenA = fileA.BaseStream.Length;

@@ -16,6 +16,12 @@ namespace ExternalSort
             sorter.ExterSort();
             sw.Stop();
             Console.WriteLine("Sorting+output took {0}", sw.Elapsed);
+
+            //MySort mySort = new MySort();
+            //sw.Start();
+            //mySort.OptimizeSort();
+            //sw.Stop();
+            //Console.WriteLine("Sorting+output took {0}", sw.Elapsed);
         }
     }
 }
